@@ -1,0 +1,37 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: TRAINER-WORKLOAD-SERVICE
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      workloadService:
+        sliding-window-size: 10
+        permitted-number-of-calls-in-half-open-state: 3
+        wait-duration-in-open-state: 5s
+        failure-rate-threshold: 50
+
+jwt:
+  secret: "Y2hhbmdlLW1lLXN0cm9uZy1zZWNyZXQtdG9rZW4xMjM0NQ=="
+  issuer: "trainer-workload-service"
+
+logging:
+  pattern:
+    level: "%5p [tx:%X{transactionId:-}]"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
