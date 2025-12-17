@@ -1,0 +1,8 @@
+spring:
+  jms:
+    listener:
+      auto-startup: false
+jwt:
+  secret: "Y2hhbmdlLW1lLXN0cm9uZy1zZWNyZXQtdG9rZW4xMjM0NQ=="
+  issuer: "trainer-workload-service"
+

@@ -13,3 +13,5 @@ public interface WorkloadRepository {
     TrainerWorkload getOrCreate(String trainerUsername, Supplier<TrainerWorkload> creator);
 }
 
+
+

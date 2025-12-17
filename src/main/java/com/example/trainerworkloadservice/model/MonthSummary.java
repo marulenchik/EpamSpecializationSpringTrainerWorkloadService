@@ -16,3 +16,5 @@ public class MonthSummary {
     private long totalTrainingDuration;
 }
 
+
+

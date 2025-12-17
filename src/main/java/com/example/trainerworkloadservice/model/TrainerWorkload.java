@@ -24,3 +24,5 @@ public class TrainerWorkload {
     private Map<Integer, YearSummary> years = new ConcurrentHashMap<>();
 }
 
+
+
