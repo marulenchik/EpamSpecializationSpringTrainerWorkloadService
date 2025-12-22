@@ -1,4 +1,8 @@
 spring:
+  activemq:
+    broker-url: vm://embedded?broker.persistent=false&broker.useJmx=false
+    packages:
+      trust-all: true
   jms:
     listener:
       auto-startup: false

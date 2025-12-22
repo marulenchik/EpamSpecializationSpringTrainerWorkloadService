@@ -27,6 +27,13 @@ public class InMemoryWorkloadRepository implements WorkloadRepository {
     public TrainerWorkload getOrCreate(String trainerUsername, Supplier<TrainerWorkload> creator) {
         return store.computeIfAbsent(trainerUsername, key -> creator.get());
     }
+
+    /**
+     * Test hook to reset in-memory state between scenarios.
+     */
+    public void clear() {
+        store.clear();
+    }
 }
 
 
