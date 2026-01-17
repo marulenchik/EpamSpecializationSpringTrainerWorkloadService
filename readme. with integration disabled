@@ -1,0 +1,74 @@
+This repository contains the Report (Listener) microservice, implemented using Spring Boot and Maven.
+The service is containerized using Docker and configured to start with external integrations disabled.
+
+Disabled integrations include:
+ActiveMQ (JMS)
+Database (JDBC / JPA)
+Eureka Client
+
+Technology Stack
+Java 17
+Spring Boot
+Maven
+Docker
+
+Disabled Integrations Configuration
+File: src/main/resources/application-disabled.yml
+"""
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jms.activemq.ActiveMQAutoConfiguration
+      - org.springframework.boot.autoconfigure.jms.JmsAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+
+eureka:
+  client:
+    enabled: false
+
+spring:
+  profiles:
+    default: disabled
+"""
+
+This configuration ensures the service starts without connecting to any external systems.
+
+Dockerfile:
+"""
+# ---- Build stage ----
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+
+COPY pom.xml .
+COPY .mvn/ .mvn/
+COPY mvnw .
+RUN mvn -q -DskipTests dependency:go-offline || true
+
+COPY src ./src
+RUN mvn -DskipTests package
+
+# ---- Run stage ----
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+EXPOSE 8080
+
+ENTRYPOINT ["java","-jar","/app/app.jar"]
+"""
+
+Building the Docker Image
+
+Run the following command from the project root directory:
+"""
+docker build -t trainer-workload-service:disabled .
+"""
+
+Running the Application
+The application listens on port 8080.
+"""
+docker run -p 8080:8080 trainer-workload-service:disabled
+"""
+Access
+http://localhost:8080
